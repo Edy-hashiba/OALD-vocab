@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1b1e25">
+<title>プライバシーポリシー - OALD 単語帳</title>
+<link rel="stylesheet" href="review.css">
+<link rel="stylesheet" href="mobile.css">
+<style>
+  .doc { max-width: 720px; margin: 0 auto; padding: 20px 20px 60px; }
+  .doc h2 { font-size: 17px; margin: 30px 0 10px; }
+  .doc h3 { font-size: 15px; margin: 20px 0 8px; }
+  .doc li { margin: 6px 0; }
+  .doc table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+  .doc th, .doc td {
+    border: 1px solid var(--line); padding: 8px 11px;
+    text-align: left; font-size: 14px; vertical-align: top;
+  }
+  .doc th { background: var(--card); }
+  .updated { color: var(--muted); font-size: 13px; }
+  .en { margin-top: 50px; padding-top: 26px; border-top: 1px solid var(--line); }
+</style>
+
+<header><h1>プライバシーポリシー</h1></header>
+
+<div class="doc">
+  <p class="updated">OALD 単語帳（OALD Vocab）／ 最終更新: 2026年9月14日</p>
+
+  <p>OALD 単語帳は、Oxford Advanced Learner's Dictionary で調べた単語を保存して
+    復習するための個人用ツールです。<strong>運営者が管理するサーバーは存在しません。</strong></p>
+
+  <h2>収集する情報</h2>
+  <p><strong>運営者は、利用者のいかなる情報も収集しません。</strong>
+    アクセス解析、広告、トラッキング用 Cookie のいずれも使用していません。</p>
+
+  <h2>データの保存場所</h2>
+  <table>
+    <tr><th>データ</th><th>保存先</th><th>運営者から見えるか</th></tr>
+    <tr>
+      <td>保存した単語、語義、例文、メモ、復習履歴</td>
+      <td>利用者の端末内（ブラウザの IndexedDB / 拡張機能のストレージ）</td>
+      <td>見えない</td>
+    </tr>
+    <tr>
+      <td>同期を有効にした場合の単語データ</td>
+      <td>利用者自身の Google ドライブ内の <code>oald-vocab.json</code></td>
+      <td>見えない</td>
+    </tr>
+    <tr>
+      <td>Google のアクセストークン</td>
+      <td>ブラウザのメモリ内のみ（約1時間で失効。保存しない）</td>
+      <td>見えない</td>
+    </tr>
+  </table>
+
+  <h2>Google ドライブの利用について</h2>
+  <p>同期機能を使う場合のみ、以下の権限を要求します。</p>
+  <p><code>https://www.googleapis.com/auth/drive.file</code></p>
+  <p>これは <strong>本アプリが作成したファイルのみ</strong> にアクセスできる権限です。
+    利用者の Google ドライブにある他のファイルを閲覧・変更することはできません。</p>
+  <p>本アプリが作成・利用するファイルは <code>oald-vocab.json</code> 1 つだけです。
+    通信は利用者のブラウザと Google の間で直接行われ、運営者を経由しません。</p>
+  <p>Google から取得した情報は、利用者自身の端末間で単語データを同期する目的のみに
+    使用し、他のいかなる目的にも使用せず、第三者に提供しません。</p>
+
+  <h2>第三者への提供</h2>
+  <p>提供しません。運営者がデータを保持していないため、提供することができません。</p>
+
+  <h2>外部との通信</h2>
+  <ul>
+    <li><strong>GitHub Pages</strong> — アプリ本体（HTML・CSS・JavaScript）の配信のみ。
+      単語データが送られることはありません。</li>
+    <li><strong>Google</strong> — 同期を有効にした場合のみ、サインインとドライブへの
+      読み書きのために通信します。</li>
+    <li><strong>Oxford Learner's Dictionaries</strong> — 保存した単語の発音音声と
+      挿絵は、同社のサーバー上の URL を参照して再生・表示します。</li>
+  </ul>
+  <p>ブックマークレットで単語を保存する際、単語データは URL のフラグメント
+    （<code>#</code> 以降）で受け渡されます。フラグメントはブラウザがサーバーに
+    送信しない部分であるため、<strong>単語データが GitHub に送られることはありません。</strong></p>
+
+  <h2>データの削除</h2>
+  <ul>
+    <li>アプリ内で単語を個別に削除できます。</li>
+    <li>ブラウザのサイトデータを消去すると、端末内のデータは消えます。</li>
+    <li>Google ドライブの <code>oald-vocab.json</code> を削除すると、同期データは消えます。</li>
+    <li>Google アカウントの
+      <a href="https://myaccount.google.com/permissions">サードパーティ アプリとサービス</a>
+      から、本アプリのアクセス権をいつでも取り消せます。</li>
+  </ul>
+
+  <h2>お問い合わせ</h2>
+  <p><a href="https://github.com/Edy-hashiba/OALD-vocab/issues">GitHub の Issues</a></p>
+
+  <div class="en">
+    <h2>Privacy Policy (English summary)</h2>
+    <p>OALD Vocab is a personal vocabulary tool. <strong>There is no server operated
+      by the developer.</strong> No information is collected, and there is no
+      analytics, advertising or tracking.</p>
+    <p>Saved words are stored on the user's own device. If sync is enabled, they are
+      also stored in a single file, <code>oald-vocab.json</code>, in the user's own
+      Google Drive, using the <code>drive.file</code> scope — which grants access
+      only to files this application itself created, and to nothing else in Drive.
+      All traffic is directly between the user's browser and Google; it never passes
+      through the developer.</p>
+    <p>Information obtained through Google APIs is used solely to synchronise the
+      user's own vocabulary between their own devices. It is not used for any other
+      purpose, is not shared with third parties, and is not used for advertising.
+      The access token is kept in memory only and is never stored.</p>
+    <p>Users can delete their data at any time by removing words in the app, clearing
+      browser site data, deleting the Drive file, or revoking access at
+      <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</p>
+    <p>Contact: <a href="https://github.com/Edy-hashiba/OALD-vocab/issues">GitHub Issues</a></p>
+  </div>
+
+  <p style="margin-top:30px"><a href="index.html">単語帳に戻る</a></p>
+</div>
+</html>
