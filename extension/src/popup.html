@@ -1,0 +1,14 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>OALD Vocab</title>
+<link rel="stylesheet" href="popup.css">
+<form id="search">
+  <input id="q" type="search" placeholder="単語を入力" autofocus autocomplete="off" spellcheck="false">
+  <button type="submit">OALDで調べる</button>
+</form>
+<p class="hint">綴りが違ってもOALDが候補を出します</p>
+<div id="stats" class="stats"></div>
+<button id="review" class="primary" type="button">復習を始める</button>
+<button id="list" class="ghost" type="button">保存リストを開く</button>
+<script src="db.js"></script>
+<script src="popup.js"></script>

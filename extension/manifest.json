@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "OALD Vocab Saver",
+  "version": "0.1.0",
+  "description": "Save words from the Oxford Advanced Learner's Dictionary and review them later.",
+  "permissions": ["storage", "unlimitedStorage", "tabs"],
+  "host_permissions": [
+    "https://www.oxfordlearnersdictionaries.com/*",
+    "https://oxfordlearnersdictionaries.com/*"
+  ],
+  "action": {
+    "default_title": "OALD Vocab",
+    "default_popup": "src/popup.html"
+  },
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.oxfordlearnersdictionaries.com/definition/english/*",
+        "https://oxfordlearnersdictionaries.com/definition/english/*"
+      ],
+      "js": ["src/db.js", "src/parser.js", "src/content.js"],
+      "css": ["src/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/review.html"],
+      "matches": [
+        "https://www.oxfordlearnersdictionaries.com/*",
+        "https://oxfordlearnersdictionaries.com/*"
+      ]
+    }
+  ]
+}

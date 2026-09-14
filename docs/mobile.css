@@ -1,0 +1,54 @@
+/* Phone-only adjustments on top of the shared review.css. */
+
+.sync-status {
+  max-width: 860px; margin: 10px auto 0; padding: 8px 14px;
+  font-size: 13px; color: var(--muted);
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+}
+.sync-status.is-ok { color: var(--ok); border-color: var(--ok); }
+.sync-status.is-bad { color: var(--bad); border-color: var(--bad); }
+.sync-status.is-warn { color: #92400e; background: #fffbeb; border-color: #fcd34d; }
+@media (prefers-color-scheme: dark) {
+  .sync-status.is-warn { color: #fcd34d; background: #2b2410; border-color: #78500a; }
+}
+
+@media (max-width: 760px) {
+  header { gap: 8px 6px; padding: 10px 12px; }
+  h1 { font-size: 15px; width: 100%; }
+  .spacer { display: none; }
+  /* Tabs get a row to themselves - sharing one with the action buttons
+     squeezes them until the labels wrap onto three lines. */
+  nav { flex: 1 1 100%; }
+  .tab { flex: 1; padding: 9px 4px; font-size: 13px; white-space: nowrap; }
+  header .ghost { flex: 1; padding: 8px 4px; font-size: 12px; white-space: nowrap; }
+
+  section { padding: 14px 12px; }
+  .sync-status { margin: 8px 12px 0; }
+
+  /* Filters stack rather than squeezing into an unusable row. */
+  .toolbar { flex-wrap: wrap; }
+  .toolbar input { flex: 1 1 100%; }
+  .toolbar select { flex: 1; }
+  .count { width: 100%; }
+
+  .flash { padding: 24px 16px; min-height: 200px; }
+  .flash .hw { font-size: 27px; }
+  .q-def { font-size: 17px; }
+  .q-sentence { font-size: 16px; }
+
+  /* Comfortable tap targets. */
+  .choice { padding: 15px 14px; }
+  .grade button, .reveal { padding: 13px 22px; }
+  .audio.big { padding: 9px 16px; }
+  /* iOS zooms the page when a focused field is under 16px. */
+  .answer-input, .toolbar input, .toolbar select, .note, .count-row input {
+    font-size: 16px;
+  }
+  .sense-drop { opacity: 1; }
+}
+
+/* Keep content clear of the iPhone home indicator and notch. */
+@supports (padding: max(0px)) {
+  body { padding-bottom: max(0px, env(safe-area-inset-bottom)); }
+  header { padding-left: max(12px, env(safe-area-inset-left)); }
+}

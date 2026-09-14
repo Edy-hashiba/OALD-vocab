@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1b1e25">
+<title>スマホから保存する - OALD 単語帳</title>
+<link rel="stylesheet" href="review.css">
+<link rel="stylesheet" href="mobile.css">
+<style>
+  .doc { max-width: 720px; margin: 0 auto; padding: 20px; }
+  .doc h2 { font-size: 16px; margin: 30px 0 10px; }
+  .doc h2:first-of-type { margin-top: 12px; }
+  .doc ol { padding-left: 22px; }
+  .doc li { margin: 7px 0; }
+  .doc code {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 4px;
+    padding: 1px 5px; font-size: 13px; word-break: break-all;
+  }
+  .grab {
+    display: inline-block; background: var(--accent); color: #fff;
+    padding: 12px 24px; border-radius: 9px; font-weight: 700;
+    text-decoration: none; margin: 6px 0;
+  }
+  .code-box {
+    width: 100%; font: 12px/1.5 ui-monospace, monospace; padding: 11px;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--card); color: var(--text); resize: vertical;
+  }
+  .copy { padding: 9px 18px; background: var(--accent); color: #fff;
+    border: 0; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+  .note-box {
+    border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    background: var(--card); border-radius: 8px; padding: 12px 15px;
+    font-size: 14px; margin: 14px 0;
+  }
+</style>
+
+<header><h1>スマホから保存する</h1></header>
+
+<div class="doc">
+  <p>スマホの Chrome や Safari には拡張機能が無いため、代わりに
+    <b>ブックマークレット</b>を使います。OALD の意味ページで実行すると、
+    保存する語義を選ぶ画面が出ます。</p>
+
+  <div class="note-box">
+    先に <a href="index.html">単語帳</a> をホーム画面に追加し、Drive 同期を
+    済ませておくと、保存した単語がそのまま他の端末にも届きます。
+  </div>
+
+  <h2>ブックマークレット</h2>
+  <p>PC のブラウザなら、このボタンをブックマークバーにドラッグするだけです。</p>
+  <p><a class="grab" id="drag" href="#">OALD に保存</a></p>
+
+  <p>スマホの場合は、下のコードをコピーしてください。</p>
+  <textarea class="code-box" id="code" rows="4" readonly></textarea>
+  <button class="copy" id="copy" type="button">コピー</button>
+
+  <h2>iPhone (Safari)</h2>
+  <ol>
+    <li>上のコードをコピーする</li>
+    <li>Safari で適当なページを開き、共有ボタン →「ブックマークを追加」</li>
+    <li>名前を <code>OALD に保存</code> にして保存</li>
+    <li>ブックマーク一覧 → 編集 → いま作ったブックマークをタップ</li>
+    <li>URL 欄の中身を消して、コピーしたコードを貼り付ける</li>
+    <li>OALD の意味ページで、ブックマークから <code>OALD に保存</code> を開く</li>
+  </ol>
+
+  <h2>iPhone（ショートカット・こちらが快適）</h2>
+  <p>共有シートから 2 タップで済みます。</p>
+  <ol>
+    <li>ショートカットアプリ → 新規ショートカット</li>
+    <li>「Web ページで JavaScript を実行」を追加</li>
+    <li>中身を消して、下の 1 行を貼り付ける<br>
+      <code id="shortcut-code"></code></li>
+    <li>ショートカットの設定（ⓘ）→「共有シートに表示」をオン</li>
+    <li>受け取るデータを「Safari の Web ページ」に絞る</li>
+    <li>OALD のページで 共有 → ショートカット名 をタップ</li>
+  </ol>
+
+  <h2>Android (Chrome)</h2>
+  <ol>
+    <li>上のコードをコピーする</li>
+    <li>適当なページで ☆ を押してブックマークを作る</li>
+    <li>ブックマークを編集し、名前を <code>oald</code>、URL をコピーしたコードにする</li>
+    <li>OALD のページを開き、<b>アドレスバーに <code>oald</code> と入力</b>して
+      候補に出たブックマークを選ぶ<br>
+      <small>Android の Chrome はブックマークをタップしても実行できないため、
+        アドレスバーから呼び出します。</small></li>
+  </ol>
+
+  <h2>うまく動かないとき</h2>
+  <ul>
+    <li>検索結果ページでは動きません。単語の意味ページで実行してください。</li>
+    <li>何も起きない場合、貼り付けた際に先頭の <code>javascript:</code> が
+      削られていることがあります（多くのブラウザが安全のため除去します）。
+      手で書き足してください。</li>
+  </ul>
+
+  <p style="margin-top:26px"><a href="index.html">単語帳に戻る</a></p>
+</div>
+
+<script>
+  const base = new URL('.', location.href).href;
+  const inner = "(function(){var s=document.createElement('script');"
+    + "s.src='" + base + "collect.js?'+Date.now();"
+    + "document.body.appendChild(s)})()";
+
+  document.getElementById('drag').href = 'javascript:' + inner;
+  document.getElementById('code').value = 'javascript:' + inner;
+  document.getElementById('shortcut-code').textContent = inner;
+
+  document.getElementById('copy').addEventListener('click', async () => {
+    const btn = document.getElementById('copy');
+    try {
+      await navigator.clipboard.writeText(document.getElementById('code').value);
+      btn.textContent = 'コピーしました';
+    } catch {
+      /* Clipboard access is refused in some mobile contexts; selecting the
+         text is then the only thing left to offer. */
+      document.getElementById('code').select();
+      btn.textContent = '選択しました。長押しでコピー';
+    }
+    setTimeout(() => { btn.textContent = 'コピー'; }, 2500);
+  });
+</script>
+</html>

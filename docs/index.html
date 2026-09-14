@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1b1e25">
+<title>OALD 単語帳</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="review.css">
+<link rel="stylesheet" href="mobile.css">
+
+<header>
+  <h1>OALD 単語帳</h1>
+  <nav>
+    <button data-view="list" class="tab is-active" type="button">保存リスト</button>
+    <button data-view="review" class="tab" type="button">復習</button>
+    <button data-view="quiz" class="tab" type="button">クイズ</button>
+  </nav>
+  <div class="spacer"></div>
+  <button id="sync" class="ghost" type="button">同期</button>
+  <button id="export" class="ghost" type="button">書き出し</button>
+  <button id="import" class="ghost" type="button">読み込み</button>
+  <input id="file" type="file" accept="application/json" hidden>
+</header>
+
+<p id="sync-status" class="sync-status" hidden></p>
+
+<section id="view-list">
+  <div class="toolbar">
+    <input id="filter" type="search" placeholder="単語・語義・例文を絞り込み" autocomplete="off">
+    <select id="cefr">
+      <option value="">全レベル</option>
+      <option>A1</option><option>A2</option><option>B1</option>
+      <option>B2</option><option>C1</option>
+    </select>
+    <select id="scope">
+      <option value="live">学習中</option>
+      <option value="archived">アーカイブ</option>
+      <option value="all">すべて</option>
+    </select>
+    <span id="count" class="count"></span>
+  </div>
+  <div id="list"></div>
+</section>
+
+<section id="view-review" hidden>
+  <div id="attention" class="attention" hidden>
+    <div class="attention-head">
+      <b>2か月経過・未卒業</b>
+      <span id="attention-count" class="count"></span>
+      <button id="attention-toggle" class="ghost" type="button">開く</button>
+    </div>
+    <div id="attention-body" hidden></div>
+  </div>
+  <div id="card-area"></div>
+</section>
+
+<section id="view-quiz" hidden>
+  <div id="quiz-setup">
+    <p id="offline-note" class="offline-note" hidden></p>
+    <h2>出題形式</h2>
+    <div id="modes" class="modes"></div>
+    <label class="count-row">
+      出題数
+      <input id="qcount" type="number" min="4" max="50" value="10">
+    </label>
+    <button id="start-quiz" class="reveal" type="button">開始</button>
+  </div>
+  <div id="quiz-area" hidden></div>
+</section>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="config.js"></script>
+<script src="db.js"></script>
+<script src="quiz.js"></script>
+<script src="sync.js"></script>
+<script src="review.js"></script>
+<script src="web.js"></script>
+</html>
