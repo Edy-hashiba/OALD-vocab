@@ -89,21 +89,63 @@
   </ol>
 
   <h2>うまく動かないとき</h2>
-  <ul>
-    <li>検索結果ページでは動きません。単語の意味ページで実行してください。</li>
-    <li>何も起きない場合、貼り付けた際に先頭の <code>javascript:</code> が
-      削られていることがあります（多くのブラウザが安全のため除去します）。
-      手で書き足してください。</li>
-  </ul>
+
+  <p>実行すると、まず画面下に青い帯で <b>「OALD 単語帳: 読み込み中…」</b> が出ます。
+    <b>この帯が出たかどうか</b>で原因が分かれます。</p>
+
+  <table style="width:100%;border-collapse:collapse;margin:12px 0">
+    <tr>
+      <th style="border:1px solid var(--line);padding:8px;text-align:left">見えたもの</th>
+      <th style="border:1px solid var(--line);padding:8px;text-align:left">原因と対処</th>
+    </tr>
+    <tr>
+      <td style="border:1px solid var(--line);padding:8px">何も出ない</td>
+      <td style="border:1px solid var(--line);padding:8px">
+        ブックマークレットが実行されていません。
+        貼り付けたときに先頭の <code>javascript:</code> が削られた可能性が高いです
+        （多くのブラウザが安全のため自動で除去します）。
+        ブックマークを編集して、URL が <code>javascript:</code> で始まっているか
+        確認してください。<br>
+        Android の Chrome では、ブックマーク一覧からタップしても実行されません。
+        <b>アドレスバーに名前を入力して</b>候補から選んでください。
+      </td>
+    </tr>
+    <tr>
+      <td style="border:1px solid var(--line);padding:8px">
+        青い帯が出たまま「読み込めませんでした」</td>
+      <td style="border:1px solid var(--line);padding:8px">
+        通信の問題です。オフラインでないか確認してください。</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid var(--line);padding:8px">
+        青い帯は消えたがパネルが出ない</td>
+      <td style="border:1px solid var(--line);padding:8px">
+        単語の意味ページではありません。検索結果や一覧のページでは動きません。
+        URL が <code>/definition/english/…</code> になっているか確認してください。</td>
+    </tr>
+  </table>
 
   <p style="margin-top:26px"><a href="index.html">単語帳に戻る</a></p>
 </div>
 
 <script>
   const base = new URL('.', location.href).href;
-  const inner = "(function(){var s=document.createElement('script');"
+
+  /* The loader puts a banner up before it fetches anything. Without it, a
+     bookmarklet that never ran and a script that failed to load look exactly
+     the same from the outside: nothing happens. */
+  const inner = "(function(){var d=document,b=d.createElement('div');"
+    + "b.id='oald-boot';"
+    + "b.textContent='OALD 単語帳: 読み込み中…';"
+    + "b.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:2147483647;"
+    + "background:#2563eb;color:#fff;font:14px system-ui,sans-serif;padding:14px;"
+    + "text-align:center';"
+    + "d.body.appendChild(b);"
+    + "var s=d.createElement('script');"
     + "s.src='" + base + "collect.js?'+Date.now();"
-    + "document.body.appendChild(s)})()";
+    + "s.onerror=function(){b.textContent='OALD 単語帳: スクリプトを読み込めませんでした'};"
+    + "s.onload=function(){setTimeout(function(){b.remove()},400)};"
+    + "d.body.appendChild(s)})()";
 
   document.getElementById('drag').href = 'javascript:' + inner;
   document.getElementById('code').value = 'javascript:' + inner;

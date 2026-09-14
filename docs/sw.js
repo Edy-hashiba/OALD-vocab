@@ -6,7 +6,7 @@
  * cache-first but revalidated in the background. Cross-origin requests (the
  * Google sign-in library, OALD audio and illustrations) are never cached.
  */
-const VERSION = '1a0a5697';
+const VERSION = 'b59a6487';
 const SHELL = 'oald-shell-' + VERSION;
 
 const ASSETS = [
