@@ -6,7 +6,7 @@
  * cache-first but revalidated in the background. Cross-origin requests (the
  * Google sign-in library, OALD audio and illustrations) are never cached.
  */
-const VERSION = 'b59a6487';
+const VERSION = 'ca5550b3';
 const SHELL = 'oald-shell-' + VERSION;
 
 const ASSETS = [
@@ -22,7 +22,8 @@ const ASSETS = [
   'config.js',
   'manifest.webmanifest',
   'icon-192.png',
-  'icon-512.png'
+  'icon-512.png',
+  'icon-maskable-512.png'
 ];
 
 self.addEventListener('install', (e) => {

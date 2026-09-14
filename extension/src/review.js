@@ -110,7 +110,7 @@ function card(w) {
       el('span', { className: 'hw', textContent: w.word }),
       w.archived ? el('span', { className: 'badge', textContent: '卒業' }) : null,
       w.pos ? el('span', { className: 'pos', textContent: w.pos }) : null,
-      w.cefr ? el('span', { className: 'cefr', textContent: w.cefr }) : null,
+      displayLevel(w) ? el('span', { className: 'cefr', textContent: displayLevel(w) }) : null,
       w.phonetics.br ? el('span', { className: 'phon', textContent: w.phonetics.br }) : null,
       audioButtons(w),
       el('span', { className: 'spacer' }),
@@ -129,6 +129,22 @@ function card(w) {
       del));
 }
 
+/* OALD carries two different levels: the headword's Oxford 3000/5000 band,
+ * which most words do not have at all, and a level on each sense, which is the
+ * one shown beside the definition. Filtering on only the first hides words the
+ * dictionary plainly labels - "ensue" reads as C1 on the page but has no
+ * headword band whatsoever. */
+function levelsOf(w) {
+  const out = new Set();
+  if (w.cefr) out.add(w.cefr);
+  for (const s of w.senses || []) if (s.cefr) out.add(s.cefr);
+  return out;
+}
+
+/* What to show in the card header when the headword itself has no band. */
+const displayLevel = (w) =>
+  w.cefr || (w.senses || []).map((s) => s.cefr).find(Boolean) || '';
+
 function matches(w, q) {
   if (!q) return true;
   const hay = [
@@ -142,7 +158,7 @@ function matches(w, q) {
 function renderList() {
   const q = document.getElementById('filter').value.trim().toLowerCase();
   const lvl = document.getElementById('cefr').value;
-  const shown = words.filter((w) => matches(w, q) && (!lvl || w.cefr === lvl));
+  const shown = words.filter((w) => matches(w, q) && (!lvl || levelsOf(w).has(lvl)));
 
   document.getElementById('count').textContent = shown.length + ' / ' + words.length + ' 語';
 

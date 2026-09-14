@@ -11,8 +11,8 @@ input, button {
 }
 input { border: 1px solid #9ca3af; background: Field; color: FieldText; }
 button { border: 0; cursor: pointer; font-weight: 600; }
-form button, .primary { background: #2563eb; color: #fff; }
-form button:hover, .primary:hover { background: #1d4ed8; }
+form button, .primary { background: #9B2743; color: #fff; }
+form button:hover, .primary:hover { background: #7A1D34; }
 .ghost { background: transparent; color: #6b7280; font-weight: 400; }
 .ghost:hover { text-decoration: underline; }
 .hint { margin: 6px 0 12px; font-size: 11px; color: #6b7280; }

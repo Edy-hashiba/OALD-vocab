@@ -19,7 +19,7 @@
 #oald-vocab-bar .ovb-word strong { font-size: 16px; }
 #oald-vocab-bar .ovb-pos { color: #9ca3af; font-style: italic; }
 #oald-vocab-bar .ovb-cefr {
-  background: #2563eb; color: #fff;
+  background: #9B2743; color: #fff;
   border-radius: 3px; padding: 1px 5px; font-size: 11px; font-weight: 700;
 }
 #oald-vocab-bar .ovb-status { color: #9ca3af; font-size: 12px; white-space: nowrap; }
@@ -32,12 +32,12 @@
 }
 #oald-vocab-bar .ovb-note::placeholder { color: #6b7280; }
 #oald-vocab-bar button {
-  background: #2563eb; color: #fff;
+  background: #9B2743; color: #fff;
   border: 0; border-radius: 4px;
   padding: 6px 14px; font: inherit; font-weight: 600;
   cursor: pointer; white-space: nowrap;
 }
-#oald-vocab-bar button:hover { background: #1d4ed8; }
+#oald-vocab-bar button:hover { background: #7A1D34; }
 #oald-vocab-bar button:disabled { opacity: .6; cursor: default; }
 #oald-vocab-bar.is-saved .ovb-save { background: #374151; }
 #oald-vocab-bar .ovb-open { background: transparent; color: #9ca3af; font-weight: 400; }
@@ -58,16 +58,16 @@
   margin: 0 0 4px 10px;
   padding: 3px 10px 3px 7px;
   font: 600 11px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
-  color: #2563eb;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  color: #9B2743;
+  background: #FDF2F4;
+  border: 1px solid #F0C4CE;
   border-radius: 999px;
   cursor: pointer;
   white-space: nowrap;
   user-select: none;
 }
-.ovb-sense-pick:hover { background: #dbeafe; border-color: #2563eb; }
-.ovb-sense-pick input { margin: 0; cursor: pointer; accent-color: #2563eb; }
+.ovb-sense-pick:hover { background: #FAE3E8; border-color: #9B2743; }
+.ovb-sense-pick input { margin: 0; cursor: pointer; accent-color: #9B2743; }
 .ovb-sense-pick.is-saved {
   color: #047857; background: #ecfdf5; border-color: #6ee7b7;
 }

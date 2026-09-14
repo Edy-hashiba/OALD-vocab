@@ -117,7 +117,7 @@
        cover the panel and make the bookmarklet look broken. */
     #${PANEL}{position:fixed;left:0;right:0;bottom:0;z-index:2147483646;
       max-height:78vh;display:flex;flex-direction:column;
-      background:#fff;color:#111827;border-top:3px solid #2563eb;
+      background:#fff;color:#111827;border-top:3px solid #9B2743;
       border-radius:14px 14px 0 0;box-shadow:0 -6px 28px rgba(0,0,0,.28);
       font:15px/1.5 system-ui,-apple-system,"Segoe UI","Hiragino Sans",sans-serif;
       padding-bottom:env(safe-area-inset-bottom)}
@@ -126,7 +126,7 @@
     #${PANEL} .oc-head b{font-size:18px}
     #${PANEL} .oc-head i{color:#6b7280}
     #${PANEL} .oc-spacer{flex:1}
-    #${PANEL} .oc-cefr{background:#2563eb;color:#fff;border-radius:3px;
+    #${PANEL} .oc-cefr{background:#9B2743;color:#fff;border-radius:3px;
       padding:1px 6px;font-size:11px;font-weight:700}
     #${PANEL} .oc-x{background:none;border:0;font-size:24px;line-height:1;
       color:#6b7280;cursor:pointer;padding:0 4px}
@@ -134,7 +134,7 @@
     #${PANEL} .oc-sense{display:flex;gap:11px;align-items:flex-start;
       padding:11px 8px;border-bottom:1px solid #f3f4f6;cursor:pointer}
     #${PANEL} .oc-sense input{margin:3px 0 0;width:20px;height:20px;
-      accent-color:#2563eb;flex:none}
+      accent-color:#9B2743;flex:none}
     #${PANEL} .oc-sense em{display:block;font-style:normal;font-size:11px;
       font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#6b7280}
     #${PANEL} .oc-def{display:block}
@@ -142,8 +142,8 @@
     #${PANEL} .oc-foot{display:flex;align-items:center;gap:10px;
       padding:11px 16px 15px;border-top:1px solid #e5e7eb}
     #${PANEL} .oc-foot button{font:inherit;cursor:pointer;border-radius:8px}
-    #${PANEL} .oc-link{background:none;border:0;color:#2563eb;font-size:13px;padding:8px 2px}
-    #${PANEL} .oc-primary{background:#2563eb;color:#fff;border:0;
+    #${PANEL} .oc-link{background:none;border:0;color:#9B2743;font-size:13px;padding:8px 2px}
+    #${PANEL} .oc-primary{background:#9B2743;color:#fff;border:0;
       padding:12px 26px;font-weight:700}
     #${PANEL} .oc-primary:disabled{background:#9ca3af}
     @media (prefers-color-scheme:dark){
