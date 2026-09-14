@@ -36,7 +36,7 @@ Write-Output "  generated collect.js ($([math]::Round(($header+$collect).Length/
 # keeps serving the previous build from its cache and a deploy appears to do
 # nothing - the "why aren't my changes showing up" trap.
 $hashInput = ''
-foreach ($f in (Get-ChildItem $out -File | Where-Object { $_.Extension -in '.js', '.css', '.html' } | Sort-Object Name)) {
+foreach ($f in (Get-ChildItem $out -File | Where-Object { $_.Extension -in '.js', '.css', '.html', '.png', '.webmanifest' } | Sort-Object Name)) {
     if ($f.Name -eq 'sw.js') { continue }
     $hashInput += (Get-FileHash $f.FullName -Algorithm SHA256).Hash
 }
