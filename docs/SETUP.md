@@ -17,7 +17,7 @@
 4. 1〜2分待つと、ここで公開される
 
 ```
-https://edy-hashiba.github.io/oald-vocab/
+https://edy-hashiba.github.io/OALD-vocab/
 ```
 
 > 単語データはリポジトリに入らない（Drive と端末内にだけある）ので、Public でも
@@ -94,7 +94,7 @@ CLIENT_ID: '1234567890-abcdefg.apps.googleusercontent.com',
 
 ## C. スマホに入れる
 
-1. スマホのブラウザで `https://edy-hashiba.github.io/oald-vocab/` を開く
+1. スマホのブラウザで `https://edy-hashiba.github.io/OALD-vocab/` を開く
 2. **iPhone (Safari)**: 共有ボタン → **ホーム画面に追加**
    **Android (Chrome)**: メニュー → **アプリをインストール**
 3. アプリを開いて **「同期」** をタップ → Google アカウントでサインイン
@@ -126,7 +126,7 @@ CLIENT_ID: '1234567890-abcdefg.apps.googleusercontent.com',
 公開後、スマホで次のページを開いて、書いてある手順に従う。
 
 ```
-https://edy-hashiba.github.io/oald-vocab/bookmarklet.html
+https://edy-hashiba.github.io/OALD-vocab/bookmarklet.html
 ```
 
 iPhone は「ショートカット」方式（共有シートから2タップ）が快適。

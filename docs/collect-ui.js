@@ -14,7 +14,7 @@
 
   const PANEL = 'oald-collect-panel';
   const SAVE_URL = new URL('save.html', document.currentScript?.src
-    || 'https://edy-hashiba.github.io/oald-vocab/collect.js').href;
+    || 'https://edy-hashiba.github.io/OALD-vocab/collect.js').href;
 
   document.getElementById(PANEL)?.remove();
 
