@@ -175,3 +175,16 @@ IDを持たないが、定義文で照合して自動的にIDつきに統合さ�
 
 音声・イラストをオフラインでも使えるようにするには、URL ではなくファイル本体を
 端末にキャッシュする必要がある（Cache API）。これは Drive 同期と併せて実装予定。
+
+## アイコンの作り直し
+
+```
+powershell -ExecutionPolicy Bypass -File tools\make-icons.ps1
+```
+
+`docs\icon-*.png`（PWA）と `extension\icons\*.png`（拡張機能）を同じ描画から生成する。
+16px では罫線としおりを省く（そのまま縮小すると潰れて、かえって形が読めなくなる）。
+
+変更後は `build-pwa.ps1` を実行してから push すること。Service Worker の
+キャッシュバージョンは画像も含めたハッシュから決まるので、これを忘れると
+古いアイコンが配信され続ける。拡張機能側は `chrome://extensions` で 🔄 更新。
