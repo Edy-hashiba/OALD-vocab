@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Offline shell for the web app.
  *
  * HTML is network-first so a deploy is picked up immediately - a cache-first
@@ -6,7 +6,7 @@
  * cache-first but revalidated in the background. Cross-origin requests (the
  * Google sign-in library, OALD audio and illustrations) are never cached.
  */
-const VERSION = 'v1';
+const VERSION = '9813b666';
 const SHELL = 'oald-shell-' + VERSION;
 
 const ASSETS = [

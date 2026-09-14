@@ -59,13 +59,19 @@ const currentView = () =>
 syncBtn.addEventListener('click', () => runSync({ interactive: true }));
 
 /* Try a quiet sync on open and when coming back online, so the phone usually
- * already has the latest list before it is touched. */
+ * already has the latest list before it is touched.
+ *
+ * Only once this device has synced before, though: a silent token request on a
+ * device that has never signed in still opens a popup, which the browser blocks
+ * and logs as an error. Signing in the first time is the button's job. */
+const canSyncQuietly = () => Sync.configured() && !!Sync.lastSyncAt();
+
 window.addEventListener('load', () => {
   idle();
-  if (navigator.onLine && Sync.configured()) runSync({ interactive: false });
+  if (navigator.onLine && canSyncQuietly()) runSync({ interactive: false });
 });
 window.addEventListener('online', () => {
-  if (Sync.configured()) runSync({ interactive: false });
+  if (canSyncQuietly()) runSync({ interactive: false });
 });
 
 if ('serviceWorker' in navigator) {

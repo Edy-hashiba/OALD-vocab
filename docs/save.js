@@ -100,6 +100,12 @@ function fail(msg, detail) {
     syncLine.textContent = 'この端末に保存しました。オンラインになったら同期されます。';
     return;
   }
+  /* A silent token request on a device that has never signed in opens a popup,
+   * which the browser blocks. Leave the first sign-in to the app's button. */
+  if (!Sync.lastSyncAt()) {
+    syncLine.textContent = 'この端末に保存しました。単語帳を開いて「同期」を押してください。';
+    return;
+  }
 
   syncLine.textContent = 'Drive と同期しています…';
   try {
