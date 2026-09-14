@@ -115,5 +115,20 @@ window.addEventListener('online', () => {
 });
 
 if ('serviceWorker' in navigator) {
+  /* Assets are served from the cache first, so the load right after a deploy
+   * runs the previous build while the new one is still being fetched. Reload
+   * once when the new worker takes over, so an update reaches the device on
+   * the first visit rather than the second.
+   *
+   * Guarded on there having been a controller already: on the very first
+   * registration the worker also takes over, and reloading then would be a
+   * pointless extra load - and, if it ever recurred, a loop. */
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController || reloading) return;
+    reloading = true;
+    location.reload();
+  });
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
