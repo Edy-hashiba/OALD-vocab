@@ -100,10 +100,35 @@ function fail(msg, detail) {
     syncLine.textContent = 'この端末に保存しました。オンラインになったら同期されます。';
     return;
   }
+
+  /* Offer the sign-in right here rather than sending the learner off to the
+   * app. A phone can easily open this page in a different storage context from
+   * the installed app - Safari and a Home Screen web app do not share a
+   * database - so a word that stops at "saved on this device" is effectively
+   * lost. Reaching Drive is what actually makes it saved. */
+  function offerSync(message) {
+    syncLine.textContent = message;
+    const btn = el('button', { className: 'reveal', type: 'button',
+      textContent: 'Google にサインインして同期' });
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      syncLine.textContent = 'Drive と同期しています…';
+      try {
+        await Sync.sync({ interactive: true });
+        syncLine.textContent = 'Drive と同期しました。';
+        btn.remove();
+      } catch (e) {
+        syncLine.textContent = '同期できませんでした: ' + e.message;
+        btn.disabled = false;
+      }
+    });
+    syncLine.after(el('div', { className: 'grade' }, btn));
+  }
+
   /* A silent token request on a device that has never signed in opens a popup,
-   * which the browser blocks. Leave the first sign-in to the app's button. */
+   * which the browser blocks - so ask for the sign-in explicitly instead. */
   if (!Sync.lastSyncAt()) {
-    syncLine.textContent = 'この端末に保存しました。単語帳を開いて「同期」を押してください。';
+    offerSync('この端末に保存しました。Drive に送るにはサインインが必要です。');
     return;
   }
 
@@ -112,8 +137,6 @@ function fail(msg, detail) {
     await Sync.sync({ interactive: false });
     syncLine.textContent = 'Drive と同期しました。';
   } catch {
-    /* A silent token request fails when the grant has lapsed; that is not a
-     * saving failure, and the app's own sync button can finish the job. */
-    syncLine.textContent = 'この端末に保存しました。同期は単語帳の「同期」から行ってください。';
+    offerSync('この端末に保存しました。承認の期限が切れています。');
   }
 })();

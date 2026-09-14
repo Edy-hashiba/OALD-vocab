@@ -37,6 +37,7 @@ async function runSync({ interactive }) {
     const r = await Sync.sync({ interactive });
     await load();
     show(currentView());
+    await pushToBridge();
     const parts = [];
     if (r.added) parts.push(`新規 ${r.added}`);
     if (r.updated) parts.push(`更新 ${r.updated}`);
@@ -55,6 +56,45 @@ async function runSync({ interactive }) {
 
 const currentView = () =>
   document.querySelector('.tab.is-active')?.dataset.view || 'list';
+
+/* ---------- bridge to the Chrome extension ----------
+ * The extension saves into its own storage and never talks to Drive, so on a
+ * PC its words only get anywhere by passing through this page. Its content
+ * script announces itself and offers what it holds; we merge that in, and hand
+ * the merged collection back so its save bar stays accurate. */
+
+let bridgeSeen = false;
+
+window.addEventListener('message', async (e) => {
+  if (e.source !== window || e.origin !== location.origin) return;
+  const msg = e.data;
+  if (!msg || msg.from !== 'oald-extension') return;
+
+  if (msg.type === 'OALD_BRIDGE_READY') {
+    bridgeSeen = true;
+    return;
+  }
+
+  if (msg.type === 'OALD_BRIDGE_WORDS') {
+    bridgeSeen = true;
+    const r = await VocabDB.importJSON(JSON.stringify(msg.payload));
+    if (r.added || r.updated) {
+      await load();
+      show(currentView());
+      say(`拡張機能から ${r.added + r.updated} 語を取り込みました`, 'ok');
+      setTimeout(idle, 4000);
+    }
+    /* Give the extension the merged picture back, including anything that
+     * arrived from Drive or another device. */
+    window.postMessage({ type: 'OALD_BRIDGE_PUSH', json: await VocabDB.exportJSON() }, location.origin);
+  }
+});
+
+/* After a sync, let the extension see what came down from Drive. */
+async function pushToBridge() {
+  if (!bridgeSeen) return;
+  window.postMessage({ type: 'OALD_BRIDGE_PUSH', json: await VocabDB.exportJSON() }, location.origin);
+}
 
 syncBtn.addEventListener('click', () => runSync({ interactive: true }));
 

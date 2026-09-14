@@ -5,6 +5,7 @@
   "description": "Save words from the Oxford Advanced Learner's Dictionary and review them later.",
   "permissions": ["storage", "unlimitedStorage", "tabs"],
   "host_permissions": [
+    "https://edy-hashiba.github.io/*",
     "https://www.oxfordlearnersdictionaries.com/*",
     "https://oxfordlearnersdictionaries.com/*"
   ],
@@ -24,6 +25,11 @@
       ],
       "js": ["src/db.js", "src/parser.js", "src/content.js"],
       "css": ["src/content.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://edy-hashiba.github.io/OALD-vocab/*"],
+      "js": ["src/bridge.js"],
       "run_at": "document_idle"
     }
   ],
