@@ -27,3 +27,9 @@ document.getElementById('list').addEventListener('click', () => openReview(''));
     cell(s.attention, '2か月経過', s.attention ? 'warn' : '') +
     cell(s.archived, '卒業');
 })();
+
+/* Syncing happens in the web app - the extension deliberately does no OAuth. */
+document.getElementById('web').addEventListener('click', () => {
+  chrome.tabs.create({ url: 'https://edy-hashiba.github.io/OALD-vocab/' });
+  window.close();
+});

@@ -5,13 +5,15 @@
 <link rel="stylesheet" href="review.css">
 
 <header>
-  <h1>OALD 単語帳</h1>
+  <h1>OALD 単語帳 <span class="where">拡張機能</span></h1>
   <nav>
     <button data-view="list" class="tab is-active" type="button">保存リスト</button>
     <button data-view="review" class="tab" type="button">復習</button>
     <button data-view="quiz" class="tab" type="button">クイズ</button>
   </nav>
   <div class="spacer"></div>
+  <button id="open-web" class="ghost" type="button"
+    data-url="https://edy-hashiba.github.io/OALD-vocab/">同期（Webアプリ）</button>
   <button id="export" class="ghost" type="button">書き出し</button>
   <button id="import" class="ghost" type="button">読み込み</button>
   <input id="file" type="file" accept="application/json" hidden>

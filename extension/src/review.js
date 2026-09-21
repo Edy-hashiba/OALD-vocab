@@ -627,6 +627,13 @@ function show(view) {
 
 document.getElementById('start-quiz').addEventListener('click', startQuiz);
 
+/* Only the extension's own page carries this button. Sync lives in the web
+ * app, because that is where the Google sign-in is; the two screens otherwise
+ * look identical, which is exactly why the way across needs to be visible. */
+document.getElementById('open-web')?.addEventListener('click', (e) => {
+  window.open(e.currentTarget.dataset.url, '_blank');
+});
+
 document.querySelectorAll('.tab').forEach((t) =>
   t.addEventListener('click', () => show(t.dataset.view)));
 
