@@ -52,3 +52,19 @@
   body { padding-bottom: max(0px, env(safe-area-inset-bottom)); }
   header { padding-left: max(12px, env(safe-area-inset-left)); }
 }
+
+/* Sync diagnostics: a phone has no console, so the answer has to be on screen. */
+.diag {
+  max-width: 860px; margin: 10px auto 0; padding: 12px 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 9px;
+  font-size: 13px;
+}
+.diag h3 { margin: 0 0 8px; font-size: 13px; }
+.diag table { border-collapse: collapse; width: 100%; }
+.diag td { padding: 4px 0; vertical-align: top; }
+.diag td:first-child { color: var(--muted); width: 40%; white-space: nowrap; }
+.diag code { word-break: break-all; font-size: 12px; }
+.diag .verdict { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.diag .verdict.bad { color: var(--bad); }
+.diag .verdict.ok { color: var(--ok); }
+@media (max-width: 760px) { .diag { margin: 8px 12px 0; } }

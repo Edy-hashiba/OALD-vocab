@@ -171,8 +171,51 @@
     return { ...pulled, at, bytes: merged.length };
   }
 
+  /* Where a sync problem actually is, reported from the device that has it.
+   * Phones have no console to look at, and every sync failure so far has come
+   * down to one of these four things: the wrong account, two files with the
+   * same name, an empty remote, or a local copy that never received anything. */
+  async function diagnose() {
+    const out = {
+      configured: configured(),
+      online: navigator.onLine,
+      lastSync: lastSyncAt(),
+      local: (await VocabDB.getAll({ include: 'all' })).length
+    };
+    if (!out.configured || !out.online) return out;
+
+    await getToken({ interactive: true });
+
+    try {
+      const res = await api(`${DRIVE}/about?fields=user`);
+      out.account = res.ok ? (await res.json()).user?.emailAddress || '(不明)' : '(取得できません)';
+    } catch {
+      out.account = '(取得できません)';
+    }
+
+    const q = encodeURIComponent(`name='${CFG.FILE_NAME}' and trashed=false`);
+    const res = await api(`${DRIVE}/files?q=${q}&spaces=drive&fields=files(id,modifiedTime,size)`);
+    if (!res.ok) throw new Error('Drive の検索に失敗しました (' + res.status + ')');
+    const files = (await res.json()).files || [];
+    out.fileCount = files.length;
+    out.files = files.map((f) => ({ id: f.id, modified: f.modifiedTime, size: Number(f.size) || 0 }));
+
+    if (files.length) {
+      const body = await api(`${DRIVE}/files/${files[0].id}?alt=media`).then((r) => r.text());
+      try {
+        const parsed = JSON.parse(body);
+        const list = Array.isArray(parsed) ? parsed : parsed.words || [];
+        out.remote = list.length;
+        out.remoteLive = list.filter((w) => w && !w.deleted && !w.archived).length;
+      } catch {
+        out.remote = '(読めません)';
+      }
+    }
+    return out;
+  }
+
   global.Sync = {
-    configured, signedIn, signOut, sync, lastSyncAt,
+    configured, signedIn, signOut, sync, lastSyncAt, diagnose,
     FILE_NAME: CFG.FILE_NAME
   };
 })(window);

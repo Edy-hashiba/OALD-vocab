@@ -34,6 +34,9 @@ async function runSync({ interactive }) {
   syncBtn.disabled = true;
   say('同期中…');
   try {
+    /* Collect anything saved in the extension since this page loaded, so it
+     * travels up with this sync rather than waiting for a reload. */
+    await pullFromBridge();
     const r = await Sync.sync({ interactive });
     await load();
     show(currentView());
@@ -64,6 +67,7 @@ const currentView = () =>
  * the merged collection back so its save bar stays accurate. */
 
 let bridgeSeen = false;
+let awaitingPull = null;
 
 window.addEventListener('message', async (e) => {
   if (e.source !== window || e.origin !== location.origin) return;
@@ -87,8 +91,31 @@ window.addEventListener('message', async (e) => {
     /* Give the extension the merged picture back, including anything that
      * arrived from Drive or another device. */
     window.postMessage({ type: 'OALD_BRIDGE_PUSH', json: await VocabDB.exportJSON() }, location.origin);
+    awaitingPull?.(r);
   }
 });
+
+/* Ask the extension for what it holds right now.
+ *
+ * The extension offers its words once, when this page loads. Words saved after
+ * that - the normal case, since the dictionary is where saving happens - would
+ * otherwise sit in the extension while sync pushed this page's stale copy to
+ * Drive, and nothing would ever reach the phone. So every sync starts by asking
+ * again. */
+function pullFromBridge(timeoutMs = 2000) {
+  if (!bridgeSeen) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    const finish = (r) => {
+      if (awaitingPull !== finish) return;
+      awaitingPull = null;
+      resolve(r);
+    };
+    awaitingPull = finish;
+    window.postMessage({ type: 'OALD_BRIDGE_PULL' }, location.origin);
+    /* The extension may have been disabled since it announced itself. */
+    setTimeout(() => finish(null), timeoutMs);
+  });
+}
 
 /* After a sync, let the extension see what came down from Drive. */
 async function pushToBridge() {
@@ -97,6 +124,86 @@ async function pushToBridge() {
 }
 
 syncBtn.addEventListener('click', () => runSync({ interactive: true }));
+
+/* ---------- diagnostics ---------- */
+
+const diagBtn = document.getElementById('diag');
+
+function verdictFor(d, fromExtension) {
+  if (!d.configured) return ['bad', 'CLIENT_ID が設定されていません。'];
+  if (!d.online) return ['bad', 'オフラインです。'];
+  if (d.fileCount === 0) return ['bad', 'Drive にファイルがありません。一度「同期」を押してください。'];
+  if (d.fileCount > 1) {
+    return ['bad', `同じ名前のファイルが ${d.fileCount} 個あります。端末ごとに別のファイルを`
+      + '読み書きしている可能性が高いので、Drive で古いほうを削除してください。'];
+  }
+  if (d.remote === 0 && d.local > 0) {
+    return ['bad', 'この端末には単語があるのに Drive は空です。「同期」を押すと送られます。'];
+  }
+  if (d.local === 0 && d.remote > 0) {
+    return ['bad', 'Drive には単語があるのにこの端末は空です。「同期」を押すと取り込まれます。'];
+  }
+  if (d.remote !== d.local) {
+    return ['', `Drive と この端末で語数が違います（${d.remote} / ${d.local}）。`
+      + '「同期」を押すと揃います。'];
+  }
+  return ['ok', '一致しています。'
+    + (fromExtension ? '' : ' ※拡張機能はこの端末では検出されていません。')];
+}
+
+diagBtn.addEventListener('click', async () => {
+  document.getElementById('diag-box')?.remove();
+  const box = document.createElement('div');
+  box.id = 'diag-box';
+  box.className = 'diag';
+  box.textContent = '調べています…';
+  statusEl.after(box);
+
+  let d;
+  try {
+    /* Count the extension's words too, so "PC に入れたのに" can be answered. */
+    await pullFromBridge();
+    d = await Sync.diagnose();
+  } catch (e) {
+    box.textContent = '診断できませんでした: ' + e.message;
+    return;
+  }
+
+  const rows = [
+    ['同期先アカウント', d.account || '(未サインイン)'],
+    ['この端末の単語', String(d.local)],
+    ['Drive の単語', d.remote === undefined ? '(ファイルなし)' : String(d.remote)],
+    ['Drive のファイル数', String(d.fileCount ?? 0)],
+    ['最終同期', d.lastSync ? new Date(d.lastSync).toLocaleString('ja-JP') : '(なし)'],
+    ['拡張機能', bridgeSeen ? '検出' : '未検出'],
+    ['保存先', VocabDB.backend]
+  ];
+  if (d.files?.length) {
+    rows.push(['ファイル ID', d.files.map((f) => f.id).join(' / ')]);
+    rows.push(['ファイル更新', new Date(d.files[0].modified).toLocaleString('ja-JP')]);
+  }
+
+  const [kind, text] = verdictFor(d, bridgeSeen);
+  box.textContent = '';
+  const h = document.createElement('h3');
+  h.textContent = '同期の診断';
+  const table = document.createElement('table');
+  for (const [k, v] of rows) {
+    const tr = document.createElement('tr');
+    const td1 = document.createElement('td');
+    td1.textContent = k;
+    const td2 = document.createElement('td');
+    const code = document.createElement('code');
+    code.textContent = v;
+    td2.append(code);
+    tr.append(td1, td2);
+    table.append(tr);
+  }
+  const verdict = document.createElement('div');
+  verdict.className = 'verdict ' + kind;
+  verdict.textContent = text;
+  box.append(h, table, verdict);
+});
 
 /* Try a quiet sync on open and when coming back online, so the phone usually
  * already has the latest list before it is touched.
